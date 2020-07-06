@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class FSM : MonoBehaviour
 {
@@ -17,6 +18,13 @@ public class FSM : MonoBehaviour
     // wayPoints which is th goal location for the character to go
     public Transform[] wayPoints;
 
+    // variable for storing health number
+    public float health = 100f;
+    public Slider healthBar;
+
+    // variable for chairs where the character can increase health back
+    public Transform[] chairs;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +35,7 @@ public class FSM : MonoBehaviour
     void Update()
     {
         currentState.Execute();
+        healthBar.value = health;
     }
 
     // function for changing the current state to the next state

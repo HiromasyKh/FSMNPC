@@ -11,19 +11,26 @@ public class IdleState : IState
     public void Enter(FSM machine) {
         this.machine = machine;
 
-        // access the idle animation so that when the character enters idle state, the animation also starts as well
+        // activate idle animation
         this.machine.animator.SetBool("isIdle", true);
         this.machine.animator.SetBool("isWalking", false);
+        
         this.machine.agent.isStopped = true; // stop the character from moving when in the idle state
     }
 
     public void Execute() {
+        Debug.Log("Idle");
+        machine.health -= 2 * Time.deltaTime;
+
         timer += Time.deltaTime;
 
         if(timer >= 10) {
             machine.ChangeState(new PatrolState());
         }
-        Debug.Log("Idle");
+        
+        if(machine.health < 10) {
+            machine.ChangeState(new GoPutHealthState());
+        }
     }
 
     public void Exit() {

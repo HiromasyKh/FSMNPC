@@ -12,19 +12,26 @@ public class PatrolState : IState
     public void Enter(FSM machine) {
         this.machine = machine;
 
-        // access the idle animation so that when the character enters idle state, the animation also starts as well
+        // activate patrol animation
         this.machine.animator.SetBool("isIdle", false);
         this.machine.animator.SetBool("isWalking", true);
     }
 
     public void Execute() {
+        Debug.Log("Patrol");
+
+        machine.health -= 5 * Time.deltaTime;
+
         timer += Time.deltaTime;
 
         if(timer >= 10) {
             machine.ChangeState(new IdleState());
         }
-        Debug.Log("Patrol");
-        Patrol();
+
+        if(machine.health < 10) {
+            machine.ChangeState(new GoPutHealthState());
+        }
+        Patrol(); 
     }
 
     public void Exit() {
